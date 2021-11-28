@@ -1,6 +1,7 @@
 const display_div = document.querySelector('#display');
 const all_numbers = document.querySelectorAll('.number');
 const all_ops = document.querySelectorAll('.operator');
+const clear_button = document.querySelector('#clear');
 
 function _throw(m) { throw m; } //for throwing exception inside ternary op
 
@@ -21,6 +22,7 @@ let operate = (f,x,y) => f(x,y);
 
 let display_value = 0;
 let operand1 = null;
+let operand2 = null;
 let chosen_operation = null;
 let clean_after_op = false;
 
@@ -50,7 +52,12 @@ function updateOperation(symbol){
         display_div.textContent = symbol + display_value;
         if (symbol !== '='){
             operand1 = display_value;
-            display_value = 0 ;
+            if (symbol === '+' || symbol === '-' ){
+                display_value = 0 ;
+            }
+            else{
+                display_value = 1 ;
+            }
             chosen_operation = symbol;
             display_div.textContent = operand1 + symbol;
         }
@@ -58,12 +65,14 @@ function updateOperation(symbol){
     }
 }
 
-
-
 all_numbers.forEach(number_button => {
     number_button.addEventListener('click',() =>{updateDisplayValue(number_button.textContent)});
 });
 
 all_ops.forEach(operator_button => {
     operator_button.addEventListener('click',() =>{updateOperation(operator_button.textContent)});
+});
+
+clear_button.addEventListener('click', () => {
+    location.reload(); //reload page
 });
