@@ -1,3 +1,14 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-image: url("resources/kelly-sikkema-UrafSwRu3hk-unsplash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 body > div:first-child {
   display: flex;
   flex-direction: column;
@@ -5,20 +16,25 @@ body > div:first-child {
 }
 
 #calculator {
+  border-style: solid;
+  border-width: 10px;
+  border-color: burlywood;
   margin-top: 100px;
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
   width: 500px;
-  height: 700px;
+  height: 560px;
 }
 
 #display {
   background-color: whitesmoke;
+  color: brown;
   flex: 0 0 20%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0px 25px;
 }
 
 #buttons {
@@ -28,6 +44,9 @@ body > div:first-child {
 
 button {
   border-width: 1px;
+  border-color: burlywood;
+  background-color: whitesmoke;
+  color: brown;
   padding: 0px;
   margin: 0px;
 }
