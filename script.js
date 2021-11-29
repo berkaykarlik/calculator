@@ -1,4 +1,5 @@
-const display_div = document.querySelector('#display');
+const op_div = document.querySelector('#op');
+const result_div = document.querySelector('#result');
 const all_numbers = document.querySelectorAll('.number');
 const all_ops = document.querySelectorAll('.operator');
 const clear_button = document.querySelector('#clear');
@@ -17,56 +18,65 @@ const symbol2func = {
     '/':divide
 }
 
-let operate = (f,x,y) => f(x,y);
-
-
-let display_value = 0;
-let operand1 = null;
-let operand2 = null;
-let chosen_operation = null;
+let old_number = null;
+let curr_number = null;
+let answer = null;
+let chosen_symbol = null;
 let clean_after_op = false;
 
-function updateDisplayValue(val){
-    if (clean_after_op){
-        display_value= 0;
-        clean_after_op = false;
+
+function updateOperationDiv(putEqual){
+    let text = chosen_symbol  !== null ? old_number + chosen_symbol : '';
+    text += curr_number !== null ?  curr_number : '' ;
+    text += putEqual ? '=' : '';
+    op_div.textContent = text;
+    result_div.textContent = answer;
+}
+
+function updateCurrNumber(val){
+    curr_number = curr_number !== null ? parseInt(val) + curr_number * 10 : parseInt(val);
+    if (answer){
+        answer = null;
     }
-    display_value = parseInt(val) + display_value * 10;
-    display_div.textContent = operand1 ? operand1 + chosen_operation + display_value : display_value;
+    updateOperationDiv();
 }
 
 function updateOperation(symbol){
-    if (operand1 == null){
-        let operator = symbol2func[symbol];
-        if (operator !== undefined){
-            chosen_operation = symbol;
-            operand1 = display_value;
-            display_value = 0;
-            display_div.textContent = operand1 + symbol;
+    if (symbol === '='){
+        //there is an ongoing operation then calculate the result
+        if(chosen_symbol && (curr_number !== null)){
+            answer = symbol2func[chosen_symbol](old_number,curr_number);
+            updateOperationDiv(true);
+            old_number = null;
+            curr_number = null;
+            chosen_symbol = null;
         }
     }
-    else{
-        display_value = symbol2func[chosen_operation](operand1,display_value);
-        chosen_operation = null;
-        operand1 = null;
-        display_div.textContent = symbol + display_value;
-        if (symbol !== '='){
-            operand1 = display_value;
-            if (symbol === '+' || symbol === '-' ){
-                display_value = 0 ;
-            }
-            else{
-                display_value = 1 ;
-            }
-            chosen_operation = symbol;
-            display_div.textContent = operand1 + symbol;
+    else {
+        if (chosen_symbol && (curr_number !== null)){
+            answer = symbol2func[chosen_symbol](old_number,curr_number);
+            updateOperationDiv(true);
+            curr_number = null;
+            chosen_symbol = symbol;
+            old_number = answer;
         }
-        clean_after_op = true;
+        else if (answer !== null){
+            chosen_symbol = symbol;
+            old_number = answer;
+            curr_number = null;
+            updateOperationDiv(false);
+        }
+        else if(curr_number !== null){
+            chosen_symbol = symbol;
+            old_number = curr_number;
+            curr_number = null;
+            updateOperationDiv(false);
+        }
     }
 }
 
 all_numbers.forEach(number_button => {
-    number_button.addEventListener('click',() =>{updateDisplayValue(number_button.textContent)});
+    number_button.addEventListener('click',() =>{updateCurrNumber(number_button.textContent)});
 });
 
 all_ops.forEach(operator_button => {
