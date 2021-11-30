@@ -113,6 +113,9 @@ function updateOperation(symbol){
             chosen_symbol = symbol;
             old_number = answer;
             curr_number = null;
+            floating_point = false;
+            floating_zeros = 1;
+            point_button.disabled =false;
             updateOperationDiv(false,'');
         }
         else if(curr_number !== null){
