@@ -62,9 +62,15 @@ button:active {
 
 .number,
 .operator,
-#clear {
+#clear,
+#point {
   flex: 1 0 auto;
   width: 125px;
+}
+#point:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
 
 #number-buttons {
