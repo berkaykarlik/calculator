@@ -45,7 +45,16 @@ function updateOperation(symbol){
     if (symbol === '='){
         //there is an ongoing operation then calculate the result
         if(chosen_symbol && (curr_number !== null)){
+            try {
             answer = symbol2func[chosen_symbol](old_number,curr_number);
+            }
+            catch(err){
+                alert(err);
+                return;
+            }
+            if (answer % 1 !== 0){
+                answer = answer.toFixed(2);
+            }
             updateOperationDiv(true);
             old_number = null;
             curr_number = null;
@@ -54,7 +63,16 @@ function updateOperation(symbol){
     }
     else {
         if (chosen_symbol && (curr_number !== null)){
+            try {
             answer = symbol2func[chosen_symbol](old_number,curr_number);
+            }
+            catch(err){
+                alert(err);
+                return;
+            }
+            if (answer % 1 !== 0){
+                answer = answer.toFixed(2);
+            }
             updateOperationDiv(true);
             curr_number = null;
             chosen_symbol = symbol;
